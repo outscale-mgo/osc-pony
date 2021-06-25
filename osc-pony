@@ -2,15 +2,17 @@
 
 oscp_retrive_ak()
 {
+    TW=$(($(tput cols) - 4))
     RET=$( curl -s -X POST https://icu.eu-west-2.outscale.com \
 	   -d $( json-object AuthenticationMethod  password Password $2 Login $1 ) \
 	   -H 'x-amz-target:TinaIcuService.ListAccessKeys' )
-    echo $RET | json-search accessKeys | ponysay
+    echo $RET | json-search accessKeys | ponysay -W$TW
 }
 
 oscp_list()
 {
+    TW=$(($(tput cols) - 4))
     curl -s -X POST https://api.eu-west-2.outscale.com/api/latest/Read$1 \
 	 --user $OSC_ACCESS_KEY:$OSC_SECRET_KEY \
-	 --aws-sigv4 "osc" | json-search | ponysay
+	 --aws-sigv4 "osc" | json-search $1 | ponysay -W$TW
 }
